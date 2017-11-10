@@ -1,0 +1,53 @@
+<template>
+  <div class="tiku">
+    <h1>题库出题</h1>
+    <div class="left" style="float: left;width: 49%">
+      <left-select @selectEnd="getBook($event)" :token="token" ></left-select>
+      <left-tree :token="token" :book="book"></left-tree>
+    </div>
+    <div class="right" style="float: left;width: 49%">
+      <main-list :catalog="catalog"></main-list>
+    </div>
+  </div>
+</template>
+
+<script>
+  import LeftSelect from './LeftSelect/LeftSelect.vue'
+  import LeftTree from './LeftTree/LeftTree.vue'
+  import MainList from './MainList/MainList.vue'
+  import {mainServer} from '@/api'
+  export default {
+    name: 'tiku',
+    data () {
+      return {
+        token: '',
+        book: {},
+        catalog: ''
+      }
+    },
+    created () {
+      mainServer.getToken().then(result => {
+        this.token = result.access_token
+      })
+    },
+    methods: {
+      getBook (book) {
+        this.book = book
+      }
+    },
+    components: {
+      'left-select': LeftSelect,
+      'left-tree': LeftTree,
+      'main-list': MainList
+    }
+  }
+</script>
+
+<style lang="stylus" scoped>
+select
+  width 80px
+  .opt
+    overflow hidden /*自动隐藏文字*/
+    text-overflow ellipsis/*文字隐藏后添加省略号*/
+    white-space nowrap/*强制不换行*/
+</style>

@@ -1,0 +1,6 @@
+{
+  "baseUrl": "/api",
+  "tkUrl": "/tk/authorization-token-server/oauth/token",
+  "list": "/list",
+  "limit": 10
+}
