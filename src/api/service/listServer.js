@@ -13,14 +13,16 @@ export const listServer = {
   },
   getHomeWork (params) {
     return axios.get(config.list + '/api', {
-      appkey: 'C6SakiHO',
-      access_token: params.token,
-      method: 'homework.question.list',
-      version: '2.0',
-      format: 'json',
-      catalog: params.catalog,
-      page: params.page,
-      limit: config.limit
+      params: {
+        appkey: 'C6SakiHO',
+        access_token: params.token,
+        method: 'homework.question.list',
+        version: '2.0',
+        format: 'json',
+        catalog: params.catalog,
+        page: params.page,
+        limit: config.limit
+      }
     })
   }
 }

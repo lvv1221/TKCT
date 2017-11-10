@@ -3,10 +3,12 @@
     <h1>题库出题</h1>
     <div class="left" style="float: left;width: 49%">
       <left-select @selectEnd="getBook($event)" :token="token" ></left-select>
-      <left-tree :token="token" :book="book"></left-tree>
+      <left-tree :token="token" :book="book" @getCata="getCata($event)"></left-tree>
     </div>
     <div class="right" style="float: left;width: 49%">
-      <main-list :catalog="catalog"></main-list>
+      <keep-alive>
+         <main-list :catalog="catalog"></main-list>
+      </keep-alive>
     </div>
   </div>
 </template>
@@ -33,6 +35,11 @@
     methods: {
       getBook (book) {
         this.book = book
+        this.catalog = book.code
+        console.log(book.properties.phase)
+      },
+      getCata (catalog) {
+        this.catalog = catalog
       }
     },
     components: {

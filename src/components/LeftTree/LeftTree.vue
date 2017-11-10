@@ -2,13 +2,13 @@
 <div class="left-tree">
   <p @click="sendCatalog()">{{book.name}}</p>
   <ul>
-    <li v-for="unit in courses" @click="sendCatalog(unit.code)">{{unit.name}}
+    <li v-for="unit in courses" ><span @click="sendCatalog([unit.code])">{{unit.name}}</span>
       <template v-if="unit.courses">
       <ul>
-        <li v-for="text in unit.courses" @click.stop="sendCatalog(text.code)">{{text.name}}
+        <li v-for="text in unit.courses"><span @click.stop="sendCatalog([unit.code, text.code])">{{text.name}}</span>
           <template v-if="text.courses">
             <ul>
-              <li v-for="chapter in text.courses" @click.stop="sendCatalog(chapter.code)">{{chapter.name}}</li>
+              <li v-for="chapter in text.courses"><span @click.stop="sendCatalog([unit.code, text.code, chapter.code])">{{chapter.name}}</span></li>
             </ul>
           </template>
         </li>
@@ -45,19 +45,26 @@
           token: this.token,
           bookCode: this.book.code
         }
-        console.log(this.book.code)
+       // console.log(this.book.code)
         treeServer.getTree(params).then(result => {
-          console.log(result)
+         // console.log(result)
           this.courses = result.data
         })
       },
-      sendCatalog (code) {
-        let Catalog = this.book.code
-        if (code) {
-          let arr = code.split('-')
-          Catalog = this.book.code + '_' + arr[arr.length - 1]
+      sendCatalog (codes) {
+        let catalog = this.book.code
+        if (codes) {
+          let temp = ''
+          codes.map(code => {
+            let arr = code.split('-')
+           // console.log(arr[arr.length - 1] + '...')
+            temp += '_' + arr[arr.length - 1]
+          })
+         // console.log(temp + 'temp')
+          catalog += temp
         }
-        console.log(Catalog)
+        console.log(catalog)
+        this.$emit('getCata', catalog)
       }
     }
   }
