@@ -7,8 +7,11 @@
     </div>
     <div class="right" style="float: left;width: 49%">
       <keep-alive>
-         <main-list :catalog="catalog"></main-list>
+         <main-list :catalog="catalog" :phase="phase" @select="getChecked($event)"></main-list>
       </keep-alive>
+    </div>
+    <div class="bot-button">
+      <button>习题蓝</button>
     </div>
   </div>
 </template>
@@ -24,7 +27,8 @@
       return {
         token: '',
         book: {},
-        catalog: ''
+        catalog: '',
+        phase: ''
       }
     },
     created () {
@@ -36,10 +40,14 @@
       getBook (book) {
         this.book = book
         this.catalog = book.code
-        console.log(book.properties.phase)
+        this.phase = book.properties.phase
+       // console.log(book.properties.phase)
       },
       getCata (catalog) {
         this.catalog = catalog
+      },
+      getChecked (arg) {
+        console.log(arg)
       }
     },
     components: {

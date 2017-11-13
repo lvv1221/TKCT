@@ -11,6 +11,19 @@ export const listServer = {
       }
     })
   },
+  getQuestionType (params) {
+    return axios.get(config.list + '/api', {
+      params: {
+        appkey: 'C6SakiHO',
+        access_token: params.token,
+        method: 'homework.section.list',
+        version: '1.0',
+        format: 'json',
+        subject: '01',
+        phase: params.phase
+      }
+    })
+  },
   getHomeWork (params) {
     return axios.get(config.list + '/api', {
       params: {
@@ -20,6 +33,7 @@ export const listServer = {
         version: '2.0',
         format: 'json',
         catalog: params.catalog,
+        section: params.section,
         page: params.page,
         limit: config.limit
       }
