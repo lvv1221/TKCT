@@ -19,14 +19,14 @@
       </div>
     </div>
   </div>
-    <div class="page" v-show="pageCount.length > 1">
-      <span @click="prePage">上一页</span>
-      <span :class="{'current': pageNum === 1}" @click="page(1)">1</span>
-      <span v-if="pomit">...</span>
-      <span v-for="item in pageCount" v-if="item.show" :class="{'current': pageNum === item.page}" style="margin: 0 10px" @click="page(item.page)">{{item.page}}</span>
-      <span v-if="nomit">...</span>
-      <span :class="{'current': pageNum === pageCount.length}" @click="page(pageCount.length)" v-if="pageCount.length > 1">{{pageCount.length}}</span>
-      <span @click="nextPage">下一页</span>
+    <div class="laypage_main laypageskin_molv" v-show="pageCount.length > 1">
+      <a href="javascript:;" @click="prePage" v-if="pageNum !== 1">上一页</a>
+      <a href="javascript:;" :class="{'laypage_curr': pageNum === 1}" @click="page(1)">1</a>
+      <span href="javascript:;" v-if="pomit">...</span>
+      <a href="javascript:;" v-for="item in pageCount" v-if="item.show" :class="{'laypage_curr': pageNum === item.page}" @click="page(item.page)">{{item.page}}</a>
+      <span href="javascript:;" v-if="nomit">...</span>
+      <a href="javascript:;" class="laypage_last" :class="{'laypage_curr': pageNum === pageCount.length}" @click="page(pageCount.length)" v-if="pageCount.length > 1">{{pageCount.length}}</a>
+      <a href="javascript:;" @click="nextPage" v-if="pageNum !== pageCount.length">下一页</a>
     </div>
   </div>
 </template>
@@ -112,7 +112,6 @@
     methods: {
       // 初始化&& 翻页后，获取题目列表
       getHomeWork (page) {
-        // 待测试
         if (!page) {
           this.pageNum = 1
         }
@@ -126,11 +125,15 @@
         listServer.getHomeWork(params).then(result => {
          // console.log(result.count)
           this.list = result.listQuestionModel
-          this.initShow(this.list.length)
-          // 没有参数时为初始化模式
-          if (!page) {
-            let pageCount = Math.ceil(result.count / this.CONFIG.limit)
-            this.initPageCount(pageCount)
+          if (this.list !== null) {
+            this.initShow(this.list.length)
+            // 没有参数时为初始化模式
+            if (!page) {
+              let pageCount = Math.ceil(result.count / this.CONFIG.limit)
+              this.initPageCount(pageCount)
+            }
+          } else {
+            console.log('没有数据')
           }
         })
       },

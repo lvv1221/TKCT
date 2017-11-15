@@ -7,6 +7,7 @@ import router from './router'
 import store from './store'
 import utils from './utils'
 import config from './assets/config/env-conf.json'
+import './assets/css/index.css'
 
 Vue.config.productionTip = false
 

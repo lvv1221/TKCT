@@ -11,7 +11,10 @@
       </keep-alive>
     </div>
     <div class="bot-button">
-      <button>习题蓝</button>
+      <button @click="showBasket">习题蓝</button>
+    </div>
+    <div class="basket">
+      <question-basket ref="basket" :checked="checkedData"></question-basket>
     </div>
   </div>
 </template>
@@ -20,6 +23,7 @@
   import LeftSelect from './LeftSelect/LeftSelect.vue'
   import LeftTree from './LeftTree/LeftTree.vue'
   import MainList from './MainList/MainList.vue'
+  import QuestionBasket from './QuestionBasket/QuestionBasket.vue'
   import {mainServer} from '@/api'
   export default {
     name: 'tiku',
@@ -28,7 +32,8 @@
         token: '',
         book: {},
         catalog: '',
-        phase: ''
+        phase: '',
+        checkedData: []
       }
     },
     created () {
@@ -47,13 +52,18 @@
         this.catalog = catalog
       },
       getChecked (arg) {
-        console.log(arg)
+       // console.log(arg)
+        this.checkedData = arg
+      },
+      showBasket () {
+        this.$refs.basket.show()
       }
     },
     components: {
       'left-select': LeftSelect,
       'left-tree': LeftTree,
-      'main-list': MainList
+      'main-list': MainList,
+      'question-basket': QuestionBasket
     }
   }
 </script>
