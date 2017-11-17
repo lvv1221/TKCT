@@ -1,0 +1,182 @@
+/**
+ * @description 切换题目的部分的css
+ * @author 吴亚
+ * @createTime 2016/6/15
+ * @editTime 2016/6/15
+ */
+
+/*切换题目的主体内容*/
+.xy-switcher-main {
+    background-color: white;
+    height: 75px;
+    position: absolute;
+    z-index: 10;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px;
+    vertical-align: middle;
+    -webkit-user-select: none;
+}
+
+/*switcher*/
+.xy-switcher-main .switcher-main {
+    margin-top: -45px;
+    margin-left: auto;
+    margin-right: auto;
+    display: table;
+    width: auto;
+}
+
+.xy-switcher-main .switcher-pool {
+    position: relative;
+    overflow: hidden;
+    width: 697px;
+    height: 25px;
+    display: inline-block;
+}
+
+.xy-switcher-main .switcher {
+    height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    list-style: none;
+    padding-left: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+
+.xy-switcher-main .xy-tab, .xy-switcher-main .switcher li {
+    display: inline-block;
+    vertical-align: middle;
+    min-width: 30px;
+    text-align: center;
+    height: 25px;
+    line-height: 25px;
+    border: 1px solid #bdbdbd;
+    background-color: whitesmoke;
+    margin-left: 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+    font-weight: bold;
+}
+
+.xy-switcher-main .xy-tab, .xy-switcher-main .switcher li:hover {
+    background-color: #fff;
+}
+
+.xy-switcher-main .xy-tab.ctrl {
+    margin-top: -20px;
+    outline: none;
+}
+
+.xy-switcher-main .switcher li.active {
+    color: white;
+    background-color: #ffa52e;
+    border-color: #ffa52e;
+}
+
+.xy-switcher-main .switcher .dndPlaceholder {
+    border: 1px dashed darkgrey;
+}
+
+.xy-switcher-main .switcher .dndDraggingSource {
+    display: none;
+}
+
+.xy-switcher-main .ctrl-row {
+    position: absolute;
+    margin: 20px auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+/*题目切换按钮组*/
+.xy-switcher-main .ctrl-buttons {
+    height: 100%;
+    display: none;
+}
+
+.xy-switcher-main .ctrl-buttons .ctrl-div {
+    display: table;
+    margin: auto;
+}
+
+.xy-switcher-main .ctrl-buttons .indicator {
+    font-size: 14px;
+    background-color: transparent;
+    border: transparent;
+    color: darkgrey;
+}
+
+.xy-switcher-main .ctrl-buttons .indicator .current {
+    color: white;
+}
+
+.xy-switcher-main .ctrl-buttons .button {
+    width: 98px;
+    margin-left: 5px;
+    margin-right: 5px;
+    color: white;
+    border: 1px solid #36373d;
+    font-size: 14px;
+    background-color: #48494f;
+    text-align: center;
+    height: 36px;
+    border-radius: 2px;
+    outline: none;
+}
+
+.xy-switcher-main .ctrl-buttons .button.disable {
+    color: #707070;
+}
+
+.xy-switcher-main .ctrl-buttons .button:not(.disable):hover {
+    background-color: #595a61;
+}
+
+.xy-switcher-main .optional {
+    float: right;
+    margin-right: 36px;
+    cursor: pointer;
+    width: 90px;
+    height: 36px;
+    border-radius: 2px;
+    border: 1px solid;
+    outline: none;
+}
+
+.xy-switcher-main .optional:hover {
+    opacity: 0.8;
+}
+
+.xy-switcher-main .optional.save {
+    color: white;
+    border-color: #ffa52e;
+    background-color: #ffa52e;
+}
+
+.xy-switcher-main .optional.back {
+    color: black;
+    border-color: darkgrey;
+    background-color: white;
+    margin-right: 10px;
+}
+
+.xy-switcher-main .hint {
+    font-size: 14px;
+    color: #898989;
+    position: absolute;
+    left: 30px;
+    line-height: 36px;
+}

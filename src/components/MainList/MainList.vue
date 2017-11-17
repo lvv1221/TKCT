@@ -1,38 +1,76 @@
 <template>
   <div class="list">
-    <div class="type">
-      <span v-if="types.length !== 0" @click="getAll" :class="{'current': section === ''}">全部</span>
-      <span v-for="(value,key) in types" @click="getSection(key)" :class="{'current': section === key}"> {{value}}</span>
+    <div class="exam_right_top">
+      <ul class="nav nav-tabs exam_tabs">
+        <li v-if="types.length !== 0" @click="getAll" :class="{'active': section === ''}"><a href="#">全部</a></li>
+        <li v-for="(value,key) in types" @click="getSection(key)" :class="{'active': section === key}">
+          <a href="#">{{value}}</a>
+        </li>
+      </ul>
     </div>
-    <div class="main">
-    <div v-for="(item, index) in list">
-      <p>
-        <span>{{item.knowledge.knowledgeName}}</span>
-        <span>{{item.difficulty.value}}</span>
-        <span>{{item.section.categoryName}}</span>
-        <input type="checkbox" :value="item" v-model="checkedQuestions" @change="selectQuestion">
-      </p>
-      <div v-html="item.content"></div>
-      <div>
-        <span @click="showAnalysis(index)">解析</span>
-        <div v-html="item.analysis" v-show="showController[index]"></div>
+    <div class="exam_content">
+      <ul class="exam_content_ul" v-show="list.length !==0">
+        <li v-for="(item, index) in list">
+          <div class="exam_content_ul_top">
+            <div class="exam_content_ul_top_img">
+              <span>{{index+1}}</span>
+            </div>
+            <div class="exam_knowledge">
+              知识点：<span :title="item.knowledge[0].knowledgeName">{{item.knowledge[0].knowledgeName}}</span>
+            </div>
+            <div class="exam_difficulty">
+              难度：
+              <span class="exam_star exam_star_orange" v-for="star in (6-item.difficulty.key)"></span>
+              <span class="exam_star" v-for="star in (item.difficulty.key-1)"></span>
+            </div>
+            <div class="exam_Questions">
+              题型：<span>{{item.section.categoryName}}</span>
+            </div>
+            <div class="exam_input" :class="{'exam_input_active': showSelected[index]}" @click="selectQuestion(index)"></div>
+          </div>
+          <!--<p>
+            <span>{{item.knowledge.knowledgeName}}</span>
+            <span>{{item.difficulty.value}}</span>
+            <span>{{item.section.categoryName}}</span>
+            <input type="checkbox" class="exam_input"  :value="item" v-model="checkedQuestions" @change="selectQuestion">
+          </p>-->
+          <div class="exam_content_ul_bottom">
+            <div  class="exam_content_topic">
+              <div v-html="item.content"></div>
+            <div class="exam_resolve" @click="showAnalysis(index)">
+              解析
+              <i class="glyphicon" :class="showController[index]?'glyphicon-menu-up':'glyphicon-menu-down'"></i>
+            </div>
+            </div>
+            <div class="exam_resolve_topic"  :class="{'show': showController[index]}">
+              【解析】
+              <div v-html="item.analysis"  :class="{'show': showController[index]}"></div>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <div class="laypage_main laypageskin_molv" v-show="pageCount.length > 1">
+        <a href="javascript:;" @click="prePage" v-if="pageNum !== 1">上一页</a>
+        <a href="javascript:;" :class="{'laypage_curr': pageNum === 1}" @click="page(1)">1</a>
+        <span href="javascript:;" v-if="pomit">...</span>
+        <a href="javascript:;" v-for="item in pageCount" v-if="item.show"
+           :class="{'laypage_curr': pageNum === item.page}" @click="page(item.page)">{{item.page}}</a>
+        <span href="javascript:;" v-if="nomit">...</span>
+        <a href="javascript:;" class="laypage_last" :class="{'laypage_curr': pageNum === pageCount.length}"
+           @click="page(pageCount.length)" v-if="pageCount.length > 1">{{pageCount.length}}</a>
+        <a href="javascript:;" @click="nextPage" v-if="pageNum !== pageCount.length">下一页</a>
       </div>
-    </div>
-  </div>
-    <div class="laypage_main laypageskin_molv" v-show="pageCount.length > 1">
-      <a href="javascript:;" @click="prePage" v-if="pageNum !== 1">上一页</a>
-      <a href="javascript:;" :class="{'laypage_curr': pageNum === 1}" @click="page(1)">1</a>
-      <span href="javascript:;" v-if="pomit">...</span>
-      <a href="javascript:;" v-for="item in pageCount" v-if="item.show" :class="{'laypage_curr': pageNum === item.page}" @click="page(item.page)">{{item.page}}</a>
-      <span href="javascript:;" v-if="nomit">...</span>
-      <a href="javascript:;" class="laypage_last" :class="{'laypage_curr': pageNum === pageCount.length}" @click="page(pageCount.length)" v-if="pageCount.length > 1">{{pageCount.length}}</a>
-      <a href="javascript:;" @click="nextPage" v-if="pageNum !== pageCount.length">下一页</a>
+      <div class="no-data" v-show="list.length === 0">
+        <img src="../../assets/img/no_data.png" alt="no-data" class="ex-img">
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-  import {listServer} from '@/api'
+  import { listServer } from '@/api'
+  import _ from 'lodash'
+
   export default {
     name: 'MainList',
     props: ['catalog', 'phase'],
@@ -42,6 +80,7 @@
         list: [],
         checkedQuestions: [], // 已选择的题目
         showController: [], // 解析内容显示控制
+        showSelected: [],
         pageCount: [],
         pageNum: 1,
         types: [],
@@ -52,7 +91,7 @@
       // 获取token
       listServer.getToken2().then(result => {
         this.token = result.access_token
-       // this.getHomeWork()
+        // this.getHomeWork()
       })
     },
     watch: {
@@ -118,15 +157,18 @@
         let params = {
           token: this.token,
           catalog: this.catalog,
-         // catalog: '09010201-002',
+          // catalog: '09010201-002',
           page: this.pageNum,
           section: this.section ? this.section : '' // 若没有指定题目类型，则获取全部
         }
         listServer.getHomeWork(params).then(result => {
-         // console.log(result.count)
+          // console.log(result.count)
           this.list = result.listQuestionModel
           if (this.list !== null) {
             this.initShow(this.list.length)
+            for (let i = 0; i < result.count; i++) {
+              this.showSelected.push(false)
+            }
             // 没有参数时为初始化模式
             if (!page) {
               let pageCount = Math.ceil(result.count / this.CONFIG.limit)
@@ -160,7 +202,7 @@
       // 下一页
       nextPage () {
         if (this.pageNum < this.pageCount.length) {
-          this.pageNum ++
+          this.pageNum++
         }
       },
       // 初始化翻页控件
@@ -182,7 +224,7 @@
         }
         listServer.getQuestionType(params).then(result => {
           this.types = result
-         // console.log(JSON.stringify(this.types))
+          // console.log(JSON.stringify(this.types))
         })
       },
       // 全部题目类型
@@ -199,7 +241,21 @@
           this.pageNum = 1
         }
       },
-      selectQuestion () {
+      /* selectQuestion (item) {
+        this.checkedQuestions.push(item)
+       // this.$emit('select', this.checkedQuestions)
+      }, */
+      selectQuestion (index) {
+       // console.log(index)
+        this.$set(this.showSelected, index, !this.showSelected[index])
+        if (_.findIndex(this.checkedQuestions, this.list[index]) === -1) {
+          this.checkedQuestions.push(this.list[index])
+         // console.log(this.checkedQuestions)
+        } else {
+          let i = _.findIndex(this.checkedQuestions, this.list[index])
+          this.checkedQuestions.splice(i, 1)
+         // console.log(this.checkedQuestions)
+        }
         this.$emit('select', this.checkedQuestions)
       }
     }
@@ -207,6 +263,28 @@
 </script>
 
 <style lang="stylus" scoped>
-.current
-  color red
+  .exam_right_top
+    ul
+      padding-left 16px
+      li
+        &.active
+          a
+            background-color #43A0F2
+            color #fff
+        a
+          padding 3px 14px
+          border-radius 0
+  .show
+    display block
+  .laypage_main
+    float right
+    margin 10px 0px
+  .no-data
+    color red
+    font-size 20px
+    text-align center
+    height 554px
+    ex-img
+      width 100%
+      height 100%
 </style>

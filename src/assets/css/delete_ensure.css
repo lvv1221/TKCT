@@ -1,0 +1,57 @@
+/**
+ * @description 确认删除的模态框样式
+ * @author 吴亚
+ * @createTime 2016/6/21
+ * @editTime 2016/6/21
+ */
+
+.xy-modal-body {
+    background-color: whitesmoke;
+    border-radius: 0;
+    padding: 0;
+}
+
+.xy-ensure-body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.xy-ensure-body p {
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+    line-height: 21px;
+}
+
+.xy-ensure-body .info {
+    background-color: darkgrey;
+    margin: 20px 30px;
+    padding: 20px 10px;
+}
+
+.xy-ensure-footer {
+    height: 45px;
+    overflow: hidden;
+    border-top: 1px solid darkgrey;
+    border-radius: 0;
+    white-space: nowrap;
+    background-color: white;
+}
+
+.xy-ensure-footer .button {
+    width: 50%;
+    font-size: 14px;
+    color: #666;
+    border: none;
+    background-color: transparent;
+    height: 100%;
+    outline: none;
+}
+
+.xy-ensure-footer .button.ensure {
+    border-right: 1px solid darkgrey;
+}
+
+.xy-ensure-body .button.cancel {
+    margin-left: -2px;
+}

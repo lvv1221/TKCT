@@ -1,0 +1,167 @@
+/**
+ * @description question body的css
+ * @author 吴亚
+ * @createTime 2016/6/14
+ * @editTime 2016/6/14
+ */
+
+/*制题题目的主体内容*/
+.xy-make-ques-body {
+    margin-bottom: 100px;
+    background-color: #e8e8e8;
+    padding: 30px 34px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    height: 550px;
+}
+
+.xy-make-ques-body .frame {
+    background-color: white;
+    padding: 20px;
+}
+
+/*题目详情区域*/
+.xy-make-ques-body .question-detail {
+    width: 100%;
+    height: auto;
+    position: relative;
+    overflow-x: hidden;
+}
+
+.xy-make-ques-body .question-detail .current-number {
+    margin-left: -20px;
+    margin-top: -20px;
+}
+
+.xy-make-ques-body .question-detail .title {
+    font-size: 24px;
+    color: #333;
+    line-height: 36px;
+    font-weight: bold;
+    overflow-x: hidden;
+}
+
+.xy-make-ques-body .question-detail .del {
+    float: right;
+    padding: 5px;
+    cursor: pointer;
+    border-bottom: 1px solid lightgrey;
+    border-left: 1px solid lightgrey;
+    border-bottom-left-radius: 8px;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.xy-make-ques-body .question-detail .del.disable {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.xy-make-ques-body .question-detail .property {
+    border: 1px solid #e8e8e8;
+    background-color: #f9f9f9;
+    padding: 5px 10px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.xy-make-ques-body .question-detail .property .keyword {
+    margin-right: 20px;
+    font-size: 20px;
+    color: #999;
+    max-width: 500px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.xy-make-ques-body .question-detail .selection {
+    font-size: 20px;
+    color: #666;
+    line-height: 30px;
+    margin-top: 24px;
+}
+.question-checkbox {
+    cursor: pointer;
+}
+
+/*答案区域*/
+.xy-make-ques-body .answer-content {
+    margin-top: 10px;
+    padding-top: 15px;
+    margin-bottom: 10px;
+}
+
+.xy-make-ques-body .answer-content .title {
+    color: #333;
+    font-weight: bold;
+    font-size: 20px;
+    vertical-align: top;
+    display: inline-block;
+    padding-left: 10px;
+}
+
+.xy-make-ques-body .answer-content .answer {
+    display: inline-block;
+    width: 820px;
+    padding: 5px;
+    vertical-align: top;
+    line-height: 30px;
+    font-size: 20px;
+    outline: none;
+    border: 1px solid darkgrey;
+    color: #333;
+}
+
+.xy-make-ques-body .answer-content .answer p {
+    margin-bottom: 0;
+}
+
+.xy-make-ques-body .answer-content .selection {
+    display: inline-block;
+    margin-left: 20px;
+    font-size: 20px;
+    -webkit-user-select: none;
+}
+
+.xy-make-ques-body .answer-content .selection input:checked {
+
+}
+
+/*解析区域*/
+.xy-make-ques-body .explain {
+    margin-top: 10px;
+}
+
+.xy-make-ques-body .explain .title {
+    font-size: 20px;
+    color: #333;
+    font-weight: bold;
+    padding-left: 10px;
+}
+
+.xy-make-ques-body .explain .content {
+    border: 1px solid darkgrey;
+    margin-top: 10px;
+}
+
+.xy-make-ques-body .explain .edit-area {
+    padding: 10px;
+    font-size: 20px;
+    color: #666;
+    line-height: 30px;
+    outline: none;
+}
+
+.xy-make-ques-body .explain .word-number {
+    text-align: right;
+    font-size: 12px;
+    color: darkgrey;
+    padding-right: 10px;
+}
+
+.xy-make-ques-body .explain .word-number .current {
+    color: black;
+}

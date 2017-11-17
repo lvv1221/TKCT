@@ -3,3 +3,14 @@
 @import "bootStrap/css/bootstrap.min.css";
 @import "layPage/laypage.css";
 @import "zTree/zTreeStyle.css";
+@import "example.css";
+@import "./common/css/custom.css";
+@import "delete_ensure.css";
+@import "make_question.css";
+@import "preview_question.css";
+@import "prop.css";
+@import "style.css";
+@import "title_bar.css";
+@import "pop.css";
+@import "iconfont/iconfont.css";
+@import "question_switcher.css";

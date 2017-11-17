@@ -1,0 +1,351 @@
+.xy-preview-questions {
+    position: relative;
+    z-index: 2;
+    display: block;
+    margin: auto;
+    width:100%;
+    min-width: 1024px;
+    height:100%;
+    overflow-x: hidden;
+    padding: 27px 38px 100px;
+    background: #e8ebeb;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.xy-pq-content {
+    position: relative;
+    width: 100%;
+    min-height: 100%;
+    background: #fff;
+    border: 1px solid #d0d0d0;
+}
+
+.xy-pq-content:before,
+.xy-pq-content:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    border: 1px solid #d0d0d0;
+}
+
+.xy-pq-content:before {
+    z-index: -1;
+    top: 8px;
+    left: -5px;
+}
+
+.xy-pq-content:after {
+    z-index: -2;
+    top: 16px;
+    left: -10px;
+}
+
+.xy-pq-content-wrapper {
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+
+}
+
+
+.xy-pq-header {
+    font-size: 18px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.xy-pq-body {
+    display: block;
+    width: 100%;
+    min-height: 100%;
+    margin-top: 24px;
+    padding: 0 40px;
+}
+
+.xy-pq-controls {
+    position: fixed;
+    width: 100%;
+    left:0;
+    bottom: 0;
+    padding: 20px 0;
+    color: #999;
+    background: #F5F5F5;
+    border-top: 1px solid #d0d0d0;
+}
+
+.xy-pq-goto-btns-wrapper {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+}
+
+.xy-pq-btn,
+.xy-pq-btn:link,
+.xy-pq-btn:visited,
+.xy-pq-btn:hover,
+.xy-pq-btn:focus{
+    outline:none;
+    color: #fff;
+}
+
+.xy-pq-btn-dtb {
+    display: inline-block;
+    position: absolute;
+    left: 38px;
+    width: 116px;
+    height: 36px;
+    line-height: 36px;
+    padding: 0;
+    background-color: #7882e7;
+    font-size: 16px;
+    text-align: center;
+    color: #fff;
+}
+
+.xy-pq-btn-dtb:hover {
+    color: #fff;
+}
+
+.xy-pq-btn-dtb img {
+    position: relative;
+    top: -2px;
+    margin-right: 4px;
+}
+
+.xy-pq-btn-prev,
+.xy-pq-btn-next {
+    display: inline-block;
+    width: 116px;
+    height: 36px;
+    text-align: center;
+    background: #5297f8;
+    color: #fff;
+    border-radius: 2px;
+}
+
+.xy-pq-btn-prev:hover,
+.xy-pq-btn-next:hover {
+    color: #fff;
+}
+
+.xy-pq-active-index,
+.xy-pq-total-questions {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.xy-pq-active-index {
+    color: #333;
+    margin-left: 10px;
+}
+
+.xy-pq-total-questions {
+    color: #666;
+    margin-right: 10px;
+}
+
+.xy-pq-btn-answer {
+    position: absolute;
+    display: block;
+    width: 118px;
+    height: 36px;
+    right:38px;
+    bottom: 20px;
+    text-align: center;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 2px;
+    background: #ff9638;
+}
+
+.xy-pq-btn-answer:hover {
+    color: #fff;
+}
+
+.xy-pq-close-btn {
+    position: fixed;
+    display: inline-block;
+    width: 38px;
+    height: 40px;
+    top: 50%;
+    border-radius: 0;
+    outline: none;
+    transform: translateY(-50%);
+    background-color: #c2c7cc;
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-image: url("../img/close-btn.png");
+}
+
+.xy-pq-close-btn:focus {
+    outline:none;
+}
+
+.xy-pq-close-btn.left {
+    left: 0;
+}
+
+.xy-pq-close-btn.right {
+    right: 0;
+}
+
+.modal-dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%,-50%) !important;
+}
+
+.xy-pq-correct-dialog-opened .modal-content,
+.xy-pq-error-dialog-opened .modal-content{
+    display: block;
+    width: 292px;
+    height: 190px;
+    border-radius: 0;
+    border: 1px solid #d0d0d0;
+    background: #fff;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.xy-pq-correct-dialog,
+.xy-pq-error-dialog {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.xy-pq-correct-dialog .xy-pq-dialog-content,
+.xy-pq-error-dialog .xy-pq-dialog-content{
+    width: 100%;
+    padding-top: 32px;
+    height: 144px;
+    text-align: center;
+    background: #f5f5f5;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.xy-pq-correct-dialog .xy-pq-description ,
+.xy-pq-error-dialog .xy-pq-description {
+    margin-top: 15px;
+    width: 100%;
+    height: 45px;
+    font-size: 20px;
+    font-weight: 800;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.xy-pq-correct-dialog .xy-pq-description {
+    color: #46be8a;
+}
+
+.xy-pq-error-dialog .xy-pq-description {
+    color: #f87070;
+}
+
+.xy-pq-dialog-close-button {
+    width: 100%;
+    height: 45px;
+    border: none;
+    outline: none;
+    border-top: 1px solid #d0d0d0;
+    font-size: 20px;
+    background: #fff;
+    font-weight: 800;
+    color: #666;
+}
+.xy-pq-analysis-dialog-opened .modal-dialog {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+}
+.xy-pq-analysis-dialog-opened .modal-content {
+    border-radius: 0;
+    border: 1px solid #d0d0d0;
+    width: 710px;
+    margin: auto;
+}
+
+.xy-pq-analysis-dialog {
+    padding-bottom: 45px;
+    max-height: 500px;
+    overflow: auto;
+}
+
+.xy-pq-analysis-dialog-header {
+    display: block;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    padding: 0 22px;
+    font-size: 20px;
+    font-weight: 800;
+    color: #999;
+    border-bottom: 1px solid #d0d0d0;
+}
+
+.xy-pq-analysis-dialog-knowledge,
+.xy-pq-analysis-dialog-difficulty,
+.xy-pq-analysis-dialog-category {
+    display: inline-block;
+    margin-right: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.xy-pq-analysis-dialog-knowledge {
+    max-width: 321px;
+}
+
+.xy-pq-analysis-dialog-difficulty {
+    max-width: 165px;
+}
+.xy-pq-analysis-dialog-category {
+    max-width: 118px;
+    margin-right: 0;
+}
+
+.xy-pq-analysis-dialog-content {
+    background: #f5f5f5;
+    min-height: 213px;
+    padding: 20px 22px;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.xy-pq-analysis-dialog-answer,
+.xy-pq-analysis-dialog-analysis title {
+    font-weight: bold;
+    color: #333;
+}
+
+.xy-pq-analysis-dialog-analysis .content {
+    color: #666;
+}
+
+.xy-pq-analysis-dialog .xy-pq-dialog-close-button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+
+
+
+

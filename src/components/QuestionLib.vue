@@ -1,20 +1,30 @@
 <template>
-  <div class="tiku">
-    <h1>题库出题</h1>
-    <div class="left" style="float: left;width: 49%">
+  <div id="Exam">
+    <div class="exam_title_bar">
+      <div class="exam_title">题库出题</div>
+      <div class="exam_title_close" id="exam_close"><i class="glyphicon glyphicon-remove" style="color:#fff;"></i></div>
+    </div>
+    <div v-show="!basketShow">
+    <div class="exam_left">
       <left-select @selectEnd="getBook($event)" :token="token" ></left-select>
+      <div class="exam_textbook_title"  :title="book.name">{{book.name}}</div>
       <left-tree :token="token" :book="book" @getCata="getCata($event)"></left-tree>
     </div>
-    <div class="right" style="float: left;width: 49%">
+    <div class="exam_right">
       <keep-alive>
          <main-list :catalog="catalog" :phase="phase" @select="getChecked($event)"></main-list>
       </keep-alive>
     </div>
-    <div class="bot-button">
-      <button @click="showBasket">习题蓝</button>
+    <div class="exam_bottm">
+      <div class="exam_bottm_generate" style="cursor: pointer;" @click="showBasket">
+        <i></i>
+        习题蓝
+        <div class="exam_digital">{{checkedData.length}}</div>
+      </div>
     </div>
-    <div class="basket">
-      <question-basket ref="basket" :checked="checkedData"></question-basket>
+    </div>
+    <div v-show="basketShow">
+      <question-basket ref="basket" :checked="checkedData" @hidden="showBasket"></question-basket>
     </div>
   </div>
 </template>
@@ -33,7 +43,8 @@
         book: {},
         catalog: '',
         phase: '',
-        checkedData: []
+        checkedData: [],
+        basketShow: false
       }
     },
     created () {
@@ -56,7 +67,8 @@
         this.checkedData = arg
       },
       showBasket () {
-        this.$refs.basket.show()
+       // this.$refs.basket.show()
+        this.basketShow = !this.basketShow
       }
     },
     components: {

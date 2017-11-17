@@ -1,0 +1,275 @@
+/*--按钮自定义开始--*/
+.btn-system{
+	width:30px;
+	height:30px;
+	background:none;
+	border:0;
+	cursor:pointer;
+	outline:none;
+	font-size:10px;
+	transition:All 0.4s ease-in-out;
+}
+.btn-system:hover{
+	transform:rotate(180deg);
+}
+.btn-system:nth-child(1):hover{
+	transform:translate(0,3px);
+}
+.btn-nav{
+	min-width:58px;
+	height:58px;
+	padding:0 8px;
+	background:none;
+	border:0;
+	color:#d6d6d6;
+	cursor:pointer;
+	outline:none;
+	font-size:12px;
+}
+.btn-nav i{
+	display:inline-block;
+	font-size:26px;
+	margin:3px  0 0;
+}
+.btn-nav:hover{
+	color:#4da0ea;
+}
+.btn-navactive{
+	background:#191919;
+	color:#4da0ea;
+}
+.btn-gray,.btn-blue,.btn-pack{
+	min-height:26px;
+	border-radius:2px;
+	padding:0 20px;
+	font-size:12px;
+	cursor:pointer;
+}
+.btn-pack{
+	border-radius:5px;
+	padding:6px 13px;
+}
+.btn-gray,.btn-pack{
+	background:#fff;
+	border:1px solid #dfdfdf;
+	color:#748697;
+}
+.btn-blue{
+	background:#51aeff;
+	border:1px solid #51aeff;
+	color:#fff;
+}
+.btn-gray i,.btn-blue i{
+	display:inline-block;
+	padding:0 4px 0 0;
+	font-size:12px;
+}
+.btn-pack i{
+	display:inline-block;
+	padding:0;
+	margin:1px 0 2px 0;
+}
+.btn-gray:hover,.btn-pack:hover{
+	border:1px solid #3798ed;
+	color:#3798ed;
+}
+.btn-blue:hover{
+	background:#3797ec;
+	border:1px solid #3797ec;
+}
+.btn-icon{
+	width:16px;
+	height:16px;
+	background:none;
+	border:0;
+	color:#a3a4a4;
+	cursor:pointer;
+}
+.btn-icon:hover{
+	color:#3798ed;
+}
+.btn-tab{
+	min-width:62px;
+	height:28px;
+	background:#fff;
+	border:1px solid #dfdfdf;
+	color:#758697;
+	font-size:12px;
+	cursor:pointer;
+	outline:none;
+}
+.btn-tab:hover{
+	color:#3798ed;
+}
+.btn-tabactive{
+	background:#3798ed;
+	color:#fff;
+	border:1px solid #3085cf;
+}
+.btn-tabactive:hover{
+	color:#fff;
+	cursor:default;
+}
+.btn-pack{
+	cursor:pointer;
+	outline:none;
+}
+.btn-empty{
+	height:20px;
+	line-height:20px;
+	padding:0 4px;
+	border:0;
+	background:none;
+	font-size:12px;
+	color:#758697;
+	cursor:pointer;
+	outline:none;
+	
+}
+.btn-empty:hover{
+	color:#3798ed;
+}
+.empty-active{
+	color:#3798ed;
+	border-bottom:1px solid #3798ed;
+}
+/*--按钮自定义结束--*/
+
+/*--tab切换开始--*/
+input.aside-tab{
+  display: none;
+}
+.aside-tabline{
+	display:block;
+	float:left;
+	width:1px;
+	height:13px;
+	margin:20px 0 0 0;
+	border-left:1px solid #666;
+}
+label.aside-tab {
+	font-size: 15px;
+	display: block;
+	float: left;          
+	width:70px;
+	color:#666;
+	padding:15px 4px 0 12px;
+}
+label.aside-tab:hover {
+	cursor: pointer;
+	color:#333;
+}
+#aside-tab1:checked ~ .aside-info1, #aside-tab2:checked ~ .aside-info2 {
+	display: block;
+}
+input.aside-tab:checked + label {
+	border-top-color: #FFB03D;
+	border-right-color: #DDD;
+	border-left-color: #DDD;
+	border-bottom-color: transparent;
+	text-decoration: none;  
+	font-weight: bold;
+	color:#333;
+}
+.aside-info1,.aside-info2 {
+	clear: both;
+	display: none;
+}
+/*--tab切换结束---*/
+
+/*--滚动条样式自定义开始--*/
+::-webkit-scrollbar{
+	width:10px;
+	background:rgba(0,0,0, 0.03);
+	border-radius:5px;
+	border:1px solid #fff;
+}
+::-webkit-scrollbar-thumb{
+	border-radius:5px;
+	background:rgba(0,0,0, 0.15);
+	border:1px solid #fff;
+}
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active{
+	background:rgba(0,0,0, 0.3);
+}
+/*--滚动条样式自定义结束--*/
+
+/*--下拉列表自定义开始--*/	
+.select-list{
+	-webkit-appearance:none;
+	-webkit-padding-start:2px;
+	background:url(../images/select_arrow.png) center right no-repeat #fff;
+	-webkit-background-origin: content-box,border-box;
+	border:1px solid #dadada;
+	border-radius:2px;
+	outline:none;
+	cursor:pointer;
+	font-family:"Microsoft YaHei";
+	font-size:12px;
+	color:#333;
+	padding:0 0 0 6px;
+	height:26px;
+}
+.select-list:hover{
+	border:1px solid #1a8ad1;
+}
+.select-list option{
+	border:1px solid #dadada;
+	background:#fff;
+	color:#514f52;
+	padding:0 8px;
+}
+select.select-list2{
+	width:100px;
+}
+select.select-list3{
+	width:320px;
+	margin-top:10px;
+}
+/*--下拉列表自定义结束--*/
+
+/*--复选框自定义开始-*/
+.ckb_box{
+	-webkit-appearance: none;
+	appearance: none;
+	width:14px;
+	height:14px;
+	margin:0 5px 2px 0;
+	cursor: pointer;
+	background:#fff;
+	border:1px solid #cacaca;
+	border-radius:1px;
+	position: relative;
+}
+.ckb_box:hover {
+	border:1px solid #5799f1;
+}
+.ckb_box:active{
+	background:#fff;
+}
+.ckb_box:checked {
+	background:url(../images/icon-check.png) center center no-repeat #fff;
+}
+.ckb_box:checked::after {
+	background:#fff;
+	display: block;
+	position: absolute;
+	top: -6px;
+	left: -5px;
+}
+.ckb_box:focus {
+	outline:none;
+	border:1px solid #5799f1;
+}
+/*--复选框自定义结束-*/
+
+/*--输入框禁灰开始-*/
+input[readonly]{
+	background:#ececed;
+	color:#b8b8b8;
+}
+input[readonly]:hover{
+	border:1px solid #dadada;
+}
+/*--输入框禁灰结束-*/

@@ -22,7 +22,8 @@ export const selectServer = {
         access_token: params.token,
         format: 'json',
         key: 'publisher',
-        version: '1.0'
+        version: '1.0',
+        subject: params.subject
       }
     })
   },

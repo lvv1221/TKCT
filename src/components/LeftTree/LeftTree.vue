@@ -13,7 +13,7 @@
         <span class="button ico_close" v-else></span>
           </template>
           <!--名称文本-->
-        <span class="node_name" @click="sendCatalog()">{{book.name}}123</span>
+        <span class="node_name" @click="sendCatalog()">{{book.name}}</span>
         </a>
         <!--单元、目录（1层）-->
         <ul class="level0" v-show="unitShow">
@@ -119,9 +119,9 @@
         current: ''
       }
     },
-    created () {
+    /* created () {
       this.getTree()
-    },
+    }, */
     watch: {
       token: function () {
         // console.log(this.token)
@@ -135,10 +135,10 @@
     methods: {
       getTree () {
         let params = {
-         // token: this.token,
-          token: '449c1420-38ac-40bf-a98d-ded9771bf57d',
-          bookCode: '09010201-002'
-         // bookCode: this.book.code
+          token: this.token,
+         // token: '0b4de1b8-dfde-46f6-be59-b34d983d9904',
+         // bookCode: '09010201-002'
+          bookCode: this.book.code
         }
        // console.log(this.token)
         treeServer.getTree(params).then(result => {
