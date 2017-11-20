@@ -12,19 +12,19 @@
     </div>
     <div class="exam_right">
       <keep-alive>
-         <main-list :catalog="catalog" :phase="phase" @select="getChecked($event)"></main-list>
+         <main-list :catalog="catalog" :phase="phase" :subject="subject"></main-list>
       </keep-alive>
     </div>
     <div class="exam_bottm">
       <div class="exam_bottm_generate" style="cursor: pointer;" @click="showBasket">
         <i></i>
         习题蓝
-        <div class="exam_digital">{{checkedData.length}}</div>
+        <div class="exam_digital">{{checkedCount}}</div>
       </div>
     </div>
     </div>
     <div v-show="basketShow">
-      <question-basket ref="basket" :checked="checkedData" @hidden="showBasket"></question-basket>
+      <question-basket ref="basket"  @hidden="showBasket"></question-basket>
     </div>
   </div>
 </template>
@@ -43,32 +43,38 @@
         book: {},
         catalog: '',
         phase: '',
+        subject: '',
         checkedData: [],
         basketShow: false
       }
     },
     created () {
+      this.$store.dispatch('setMax', 5)
       mainServer.getToken().then(result => {
         this.token = result.access_token
       })
+    },
+    computed: {
+      checkedCount () {
+        return this.$store.getters.checkedCount
+      }
     },
     methods: {
       getBook (book) {
         this.book = book
         this.catalog = book.code
         this.phase = book.properties.phase
-       // console.log(book.properties.phase)
+        this.subject = book.properties.subject[0]
+       // console.log(this.subject)
       },
       getCata (catalog) {
         this.catalog = catalog
       },
-      getChecked (arg) {
-       // console.log(arg)
-        this.checkedData = arg
-      },
       showBasket () {
        // this.$refs.basket.show()
-        this.basketShow = !this.basketShow
+        if (this.checkedCount !== 0) {
+          this.basketShow = !this.basketShow
+        }
       }
     },
     components: {

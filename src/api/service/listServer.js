@@ -19,7 +19,7 @@ export const listServer = {
         method: 'homework.section.list',
         version: '1.0',
         format: 'json',
-        subject: '01',
+        subject: params.subject,
         phase: params.phase
       }
     })

@@ -1,19 +1,19 @@
 <template>
   <div class="list">
     <div class="exam_right_top">
-      <ul class="nav nav-tabs exam_tabs">
-        <li v-if="types.length !== 0" @click="getAll" :class="{'active': section === ''}"><a href="#">全部</a></li>
+      <ul class="nav nav-tabs exam_tabs" v-if="types.length !== 0">
+        <li  @click="getAll" :class="{'active': section === ''}"><a href="#">全部</a></li>
         <li v-for="(value,key) in types" @click="getSection(key)" :class="{'active': section === key}">
           <a href="#">{{value}}</a>
         </li>
       </ul>
     </div>
     <div class="exam_content">
-      <ul class="exam_content_ul" v-show="list.length !==0">
+      <ul class="exam_content_ul" v-if="list !== null">
         <li v-for="(item, index) in list">
           <div class="exam_content_ul_top">
             <div class="exam_content_ul_top_img">
-              <span>{{index+1}}</span>
+              <span>{{index + 1}}</span>
             </div>
             <div class="exam_knowledge">
               知识点：<span :title="item.knowledge[0].knowledgeName">{{item.knowledge[0].knowledgeName}}</span>
@@ -26,7 +26,8 @@
             <div class="exam_Questions">
               题型：<span>{{item.section.categoryName}}</span>
             </div>
-            <div class="exam_input" :class="{'exam_input_active': showSelected[index]}" @click="selectQuestion(index)"></div>
+            <div class="exam_input" :class="{'exam_input_active': showSelected[index]}"
+                 @click="selectQuestion(index)"></div>
           </div>
           <!--<p>
             <span>{{item.knowledge.knowledgeName}}</span>
@@ -35,16 +36,16 @@
             <input type="checkbox" class="exam_input"  :value="item" v-model="checkedQuestions" @change="selectQuestion">
           </p>-->
           <div class="exam_content_ul_bottom">
-            <div  class="exam_content_topic">
+            <div class="exam_content_topic">
               <div v-html="item.content"></div>
-            <div class="exam_resolve" @click="showAnalysis(index)">
-              解析
-              <i class="glyphicon" :class="showController[index]?'glyphicon-menu-up':'glyphicon-menu-down'"></i>
+              <div class="exam_resolve" @click="showAnalysis(index)">
+                解析
+                <i class="glyphicon" :class="showController[index]?'glyphicon-menu-up':'glyphicon-menu-down'"></i>
+              </div>
             </div>
-            </div>
-            <div class="exam_resolve_topic"  :class="{'show': showController[index]}">
+            <div class="exam_resolve_topic" :class="{'show': showController[index]}">
               【解析】
-              <div v-html="item.analysis"  :class="{'show': showController[index]}"></div>
+              <div v-html="item.analysis" :class="{'show': showController[index]}"></div>
             </div>
           </div>
         </li>
@@ -60,7 +61,7 @@
            @click="page(pageCount.length)" v-if="pageCount.length > 1">{{pageCount.length}}</a>
         <a href="javascript:;" @click="nextPage" v-if="pageNum !== pageCount.length">下一页</a>
       </div>
-      <div class="no-data" v-show="list.length === 0">
+      <div class="no-data" v-if="list === null || list.length === 0">
         <img src="../../assets/img/no_data.png" alt="no-data" class="ex-img">
       </div>
     </div>
@@ -73,14 +74,14 @@
 
   export default {
     name: 'MainList',
-    props: ['catalog', 'phase'],
+    props: ['catalog', 'phase', 'subject'],
     data () {
       return {
         token: '',
         list: [],
         checkedQuestions: [], // 已选择的题目
         showController: [], // 解析内容显示控制
-        showSelected: [],
+        // showSelected: [],
         pageCount: [],
         pageNum: 1,
         types: [],
@@ -101,7 +102,7 @@
           this.getHomeWork()
         }
       },
-      // 如果获取到学段信息，则初始化题目类型列表
+     // 如果获取到学段信息，则初始化题目类型列表
       phase: function () {
         if (this.phase && this.token) {
           this.getQuestionType()
@@ -146,6 +147,22 @@
         } else {
           return false
         }
+      },
+      showSelected () {
+        let showSelected = []
+        for (let i = 0; i < this.list.length; i++) {
+          showSelected.push(false)
+        }
+        for (let i = 0; i < this.list.length; i++) {
+          if (_.findIndex(this.$store.state.checkedQuestions, this.list[i]) !== -1) {
+            this.$set(showSelected, i, true)
+            // this.showSelected[i].push(true)
+          } else {
+            this.$set(showSelected, i, false)
+            // this.showSelected.push(false)
+          }
+        }
+        return showSelected
       }
     },
     methods: {
@@ -166,16 +183,18 @@
           this.list = result.listQuestionModel
           if (this.list !== null) {
             this.initShow(this.list.length)
-            for (let i = 0; i < result.count; i++) {
-              this.showSelected.push(false)
-            }
-            // 没有参数时为初始化模式
-            if (!page) {
+          }
+          /*  for (let i = 0; i < result.count; i++) {
+            this.showSelected.push(false)
+          }  */
+          // 没有参数时为初始化模式
+          if (!page) {
+            if (result.count !== null) {
               let pageCount = Math.ceil(result.count / this.CONFIG.limit)
               this.initPageCount(pageCount)
+            } else {
+              this.initPageCount(0)
             }
-          } else {
-            console.log('没有数据')
           }
         })
       },
@@ -220,6 +239,7 @@
       getQuestionType () {
         let params = {
           token: this.token,
+          subject: this.subject,
           phase: this.phase[0]
         }
         listServer.getQuestionType(params).then(result => {
@@ -245,18 +265,20 @@
         this.checkedQuestions.push(item)
        // this.$emit('select', this.checkedQuestions)
       }, */
+      // 选题
       selectQuestion (index) {
-       // console.log(index)
-        this.$set(this.showSelected, index, !this.showSelected[index])
-        if (_.findIndex(this.checkedQuestions, this.list[index]) === -1) {
-          this.checkedQuestions.push(this.list[index])
-         // console.log(this.checkedQuestions)
-        } else {
-          let i = _.findIndex(this.checkedQuestions, this.list[index])
-          this.checkedQuestions.splice(i, 1)
-         // console.log(this.checkedQuestions)
-        }
-        this.$emit('select', this.checkedQuestions)
+        // console.log(index)
+        //  this.$set(this.showSelected, index, !this.showSelected[index])
+        /*  if (_.findIndex(this.checkedQuestions, this.list[index]) === -1) {
+            this.checkedQuestions.push(this.list[index])
+           // console.log(this.checkedQuestions)
+          } else {
+            let i = _.findIndex(this.checkedQuestions, this.list[index])
+            this.checkedQuestions.splice(i, 1)
+           // console.log(this.checkedQuestions)
+          }  */
+        this.$store.dispatch('addOrDel', this.list[index])
+        // this.$emit('select', this.checkedQuestions)
       }
     }
   }
@@ -274,11 +296,14 @@
         a
           padding 3px 14px
           border-radius 0
+
   .show
     display block
+
   .laypage_main
     float right
     margin 10px 0px
+
   .no-data
     color red
     font-size 20px

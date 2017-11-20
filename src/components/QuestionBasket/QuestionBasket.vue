@@ -2,13 +2,17 @@
 <div class="xy-qtool" style="background-color: #e8e8e8">
   <!--习题列表-->
   <div class="xy-make-ques-body">
-    <template v-for="(item, index) in checked"  v-if="index === i">
+    <template v-for="(item, index) in list"  v-if="index === i">
       <!--习题序号& 删除按钮-->
     <div class="frame question-detail">
       <div class="xy-q-triangle current-number">
         <span class="xy-q-triangle-content">{{index+1}}</span>
       </div>
-      <div class="del">
+      <div class="del" v-if="pageCount === 1" style="opacity: 0.4; cursor: default;">
+        <i class="iconfont"></i>
+        删除本题
+      </div>
+      <div class="del" @click="diaShow = true" v-else>
         <i class="iconfont"></i>
         删除本题
       </div>
@@ -50,6 +54,22 @@
           </div>
         </div>
       </div>
+      <!--确认弹窗-->
+      <div tabindex="-1" class="modal fade ng-isolate-scope in" style="z-index: 1050; display: block;" v-show="diaShow">
+        <div class="modal-dialog modal-sm">
+          <div class="modal-content">
+            <div class="modal-body xy-modal-body">
+              <div class="xy-ensure-body">
+                <p>是否删除习题？</p>
+              </div>
+              <div class="xy-ensure-footer">
+                <button class="button ensure" @click="deleteQue(index)">确定</button>
+                <button class="button cancel" @click="diaShow = false">取消</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </template>
     <!--<div v-for="(item, index) in checked"  v-if="index === i">
       <div v-html="item.contentObject.accessories[0].desc"></div>
@@ -73,15 +93,15 @@
   <div class="xy-switcher-main container">
     <!--分页-->
     <div class="switcher-main">
-      <span class="xy-tab ctrl" >&lt;&lt;</span>
+      <span class="xy-tab ctrl" v-if="list.length > 10" @click="prePage">&lt;&lt;</span>
       <div class="switcher-pool">
-        <ul class="switcher" style="margin: auto; width: 223px; position: static;">
-          <li class="current active" style="cursor: pointer;" v-for="(item, index) in checked" @click="page(index)">
-            <div>{{index+1}}</div>
+        <ul class="switcher" style="margin: auto;position: static;" :style="{width: pageWidth }">
+          <li class="current" :class="{active: index === i}" style="cursor: pointer;" v-for="(item, index) in list" @click="page(index)" v-if="index > pageNum &&index < pageNum + 11">
+            <div>{{index + 1}}</div>
           </li>
         </ul>
       </div>
-      <span class="xy-tab ctrl">&gt;&gt;</span>
+      <span class="xy-tab ctrl" v-if="list.length > 10" @click="NextPage">&gt;&gt;</span>
     </div>
     <!--提示与按钮-->
     <div class="row ctrl-row">
@@ -101,7 +121,7 @@
           </button>
         </div>
       </div>
-      <button class="optional save">保存</button>
+      <button class="optional save" @click="save">保存</button>
       <button class="optional back" @click="hidden">返回</button>
       <input type="file" id="save-file" style="display: none" accept=".sco">
     </div>
@@ -111,32 +131,37 @@
     <!--<button @click="hidden">返回</button>
     <button @click="">保存</button>-->
   </div>
+  <!--遮罩层-->
+  <div class="modal-backdrop fade in" style="z-index: 998;width: 970px;
+    height: 803px;margin: 0 auto;display: block;" v-show="diaShow"></div>
 </div>
 </template>
 
 <script>
   export default {
     name: 'QuestionBasket',
-    props: ['checked'],
     data () {
       return {
         showFlag: true,
-        ccc: '',
+        list: [],
         pageCount: 0,
-        i: 0
+        i: 0,
+        pageNum: -1,
+        diaShow: false
       }
+    },
+    created () {
+     // console.log(this.checked)
+      this.list = this.$store.state.checkedQuestions
     },
     updated () {
-     // console.log(this.checked)
-      if (this.checked.length !== 0) {
-        this.ccc = this.checked[0].content
-        this.pageCount = this.checked.length
-      }
+      this.pageCount = this.$store.getters.checkedCount
     },
-    watch: {
-      i: function () {
-        this.ccc = this.checked[this.i].content
-       // console.log(this.i)
+    computed: {
+      pageWidth () {
+        let width = ''
+        width = 71 + (this.pageCount - 1) * 76 + 'px'
+        return width
       }
     },
     methods: {
@@ -149,6 +174,38 @@
       },
       page (index) {
         this.i = index
+      },
+      deleteQue (index) {
+        if (index === this.pageCount - 1) {
+          this.i--
+        }
+        this.$store.dispatch('deleteQuestion', this.list[index])
+        this.diaShow = false
+      },
+      prePage () {
+        if (this.pageNum > -1) {
+          this.pageNum -= 1
+        }
+      },
+      NextPage () {
+        if (this.pageNum < this.pageCount - 11) {
+          this.pageNum += 1
+        }
+      },
+      save () {
+        console.log(this.pageCount)
+        let list = this.$store.state.checkedQuestions
+        let arr = []
+        for (let i = 0; i < this.pageCount; i++) {
+          let obj = {}
+          this.$set(obj, 'categoryCode', list[i].section.categoryCode)
+          this.$set(obj, 'contentType', list[i].content && list[i].section.content !== null ? '01' : '00')
+          this.$set(obj, 'content', list[i].content && list[i].section.content !== null ? list[i].content : list[i].contentImg)
+          this.$set(obj, 'answer', list[i].content && list[i].section.content !== null ? list[i].answer : list[i].answerImg)
+          this.$set(obj, 'contentObject', list[i].contentObject)
+          arr.push(obj)
+        }
+        console.log(JSON.stringify(arr))
       }
     }
   }
