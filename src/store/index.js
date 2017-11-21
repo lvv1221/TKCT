@@ -6,6 +6,7 @@ Vue.use(Vuex)
 const store = {
   state: {
     selectType: '',
+    questionType: [],
     maxQuesNums: 1,
     checkedQuestions: []
   },
@@ -17,6 +18,9 @@ const store = {
   mutations: {
     setMax (state, max) {
       state.maxQuesNums = max
+    },
+    setQuestionType (state, type) {
+      state.questionType = type
     },
     setSelectType (state, type) {
       state.selectType = type
@@ -49,6 +53,9 @@ const store = {
   actions: {
     setMax ({commit}, max) {
       commit('setMax', max)
+    },
+    setQuestionType ({commit}, type) {
+      commit('setQuestionType', type)
     },
     setSelectType ({commit}, type) {
       commit('setSelectType', type)

@@ -110,7 +110,7 @@
 
   export default {
     name: 'LeftTree',
-    props: ['token', 'book'],
+    props: ['token', 'book', 'reset'],
     data () {
       return {
         courses: [],
@@ -127,8 +127,13 @@
         // console.log(this.token)
       },
       book: function () {
-        if (this.token) {
+        if (this.token && this.reset === false) {
           this.getTree()
+        }
+      },
+      reset: function (reset) {
+        if (reset === true) {
+          this.courses = []
         }
       }
     },
@@ -157,6 +162,7 @@
           })
           // console.log(temp + 'temp')
           catalog += temp
+          this.current = codes[codes.length - 1]
         }
        // console.log(catalog)
         this.$emit('getCata', catalog)

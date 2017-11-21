@@ -1,9 +1,9 @@
 <template>
     <div class="exam_left_content">
-      <ex-select :items="subjects" @select="getPublishers($event)" @click="type = 'subject'" selectName="subjects"></ex-select>
+      <ex-select :items="subjects" @select="getPublishers($event)"  selectName="subjects"></ex-select>
       <ex-select :items="publishers" @select="getGrades($event)" class="exam_group_right" selectName="publishers"></ex-select>
       <ex-select :items="grades" @select="getBooks($event)" selectName="grades"></ex-select>
-      <ex-select :items="books" @select="selectBook($event)" class="exam_group_right" selectName="books"></ex-select>
+      <ex-select :items="books" @select="selectBook($event)" class="exam_group_right" selectName="books" @reset="resetBook"></ex-select>
       <!--<div class="btn-group exam_group" :class="{'open': selectShow1}">
         <select v-model="subject" @change="getPublishers" class="btn dropdown-toggle exam_toggle">
           <option v-for="item in subjects" :value="item.code"  :title="item.name">
@@ -132,6 +132,9 @@
       selectBook (book) {
         this.book = book
         this.$emit('selectEnd', this.book)
+      },
+      resetBook () {
+        this.$emit('reset')
       },
       checkedSubject (subject) {
         this.subject = subject

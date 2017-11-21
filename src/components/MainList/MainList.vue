@@ -2,8 +2,8 @@
   <div class="list">
     <div class="exam_right_top">
       <ul class="nav nav-tabs exam_tabs" v-if="types.length !== 0">
-        <li  @click="getAll" :class="{'active': section === ''}"><a href="#">全部</a></li>
-        <li v-for="(value,key) in types" @click="getSection(key)" :class="{'active': section === key}">
+        <li @click="getAll" :class="{'active': section === ''}"><a href="#">全部</a></li>
+        <li v-for="(value,key) in types" @click="getSection(key, value)" :class="{'active': section === key, 'disabled': !typeController[value]}">
           <a href="#">{{value}}</a>
         </li>
       </ul>
@@ -74,7 +74,7 @@
 
   export default {
     name: 'MainList',
-    props: ['catalog', 'phase', 'subject'],
+    props: ['catalog', 'phase', 'subject', 'reset'],
     data () {
       return {
         token: '',
@@ -85,7 +85,8 @@
         pageCount: [],
         pageNum: 1,
         types: [],
-        section: ''
+        section: '',
+        typeController: {}
       }
     },
     created () {
@@ -99,13 +100,22 @@
       // 如果获取到书本信息，则执行初始化题目列表
       catalog: function () {
         if (this.catalog && this.token) {
+          this.section = ''
           this.getHomeWork()
         }
       },
-     // 如果获取到学段信息，则初始化题目类型列表
+      // 如果获取到学段信息，则初始化题目类型列表
       phase: function () {
         if (this.phase && this.token) {
           this.getQuestionType()
+        }
+      },
+      reset: function (reset) {
+        if (reset === true) {
+          this.list = []
+          this.types = []
+          this.pageCount = []
+          this.section = ''
         }
       },
       // 如果当前页被改变，则请求接口获取题目列表，同时改变分页控件样式
@@ -163,6 +173,16 @@
           }
         }
         return showSelected
+      },
+      questionType () {
+        let type = this.$store.state.questionType
+        if (type.length === 1 && type[0] === 'subjective') {
+          return '0'
+        } else if (type.length === 1 && type[0] === 'objective') {
+          return '1'
+        } else {
+          return '2'
+        }
       }
     },
     methods: {
@@ -244,21 +264,48 @@
         }
         listServer.getQuestionType(params).then(result => {
           this.types = result
+          this.getTypeController(result)
           // console.log(JSON.stringify(this.types))
         })
+      },
+      getTypeController (result) {
+        let type = {}
+        if (this.questionType === '1') {
+         // console.log(1)
+          for (let i in result) {
+            if (result[i] === '选择题' || result[i] === '多选题' || result[i] === '判断题') {
+              this.$set(type, result[i], true)
+            } else {
+              this.$set(type, result[i], false)
+            }
+          }
+        } else if (this.questionType === '0') {
+         // console.log(2)
+          for (let i in result) {
+            if (result[i] !== '选择题' && result[i] !== '多选题' && result[i] !== '判断题') {
+              this.$set(type, result[i], true)
+            } else {
+              this.$set(type, result[i], false)
+            }
+          }
+        } else {
+          for (let i in result) {
+            this.$set(type, result[i], true)
+          }
+        }
+        this.typeController = type
+       // console.log(this.typeController)
       },
       // 全部题目类型
       getAll () {
         if (this.section !== '') {
           this.section = ''
-          this.pageNum = 1
         }
       },
       // 其他题目类型
-      getSection (key) {
-        if (this.section !== key) {
+      getSection (key, value) {
+        if (this.section !== key && this.typeController[value]) {
           this.section = key
-          this.pageNum = 1
         }
       },
       /* selectQuestion (item) {
@@ -289,6 +336,9 @@
     ul
       padding-left 16px
       li
+        &.disabled
+          a
+            color #666
         &.active
           a
             background-color #43A0F2

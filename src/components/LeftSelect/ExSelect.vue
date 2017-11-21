@@ -20,6 +20,14 @@
         selectShow: false
       }
     },
+    watch: {
+      items (items, oldItems) {
+        this.name = ''
+        if (oldItems.length !== 0 && items.length === 0) {
+          this.$emit('reset')
+        }
+      }
+    },
     computed: {
       type () {
         return this.$store.state.selectType
