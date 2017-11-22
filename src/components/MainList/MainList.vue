@@ -1,6 +1,7 @@
 <template>
   <div class="list">
     <div class="exam_right_top">
+      <!--题型列表-->
       <ul class="nav nav-tabs exam_tabs" v-if="types.length !== 0">
         <!--<li @click="getAll" :class="{'active': section === ''}"><a href="#">全部</a></li>-->
         <li v-for="(value,key) in types" @click="getSection(key, value)" :class="{'active': section === key, 'disabled': !typeController[value]}">
@@ -9,6 +10,7 @@
       </ul>
     </div>
     <div class="exam_content">
+      <!--题干列表-->
       <ul class="exam_content_ul" v-if="list !== null">
         <li v-for="(item, index) in list">
           <div class="exam_content_ul_top">
@@ -36,6 +38,7 @@
             <input type="checkbox" class="exam_input"  :value="item" v-model="checkedQuestions" @change="selectQuestion">
           </p>-->
           <div class="exam_content_ul_bottom">
+            <!--题干-->
             <div class="exam_content_topic">
               <div v-html="item.content"></div>
               <div class="exam_resolve" @click="showAnalysis(index)">
@@ -43,6 +46,7 @@
                 <i class="glyphicon" :class="showController[index]?'glyphicon-menu-up':'glyphicon-menu-down'"></i>
               </div>
             </div>
+            <!--解析-->
             <div class="exam_resolve_topic" :class="{'show': showController[index]}">
               【解析】
               <div v-html="item.analysis" :class="{'show': showController[index]}"></div>
@@ -50,17 +54,26 @@
           </div>
         </li>
       </ul>
+      <!--分页-->
       <div class="laypage_main laypageskin_molv" v-show="pageCount.length > 1">
+        <!--上一页-->
         <a href="javascript:;" @click="prePage" v-if="pageNum !== 1">上一页</a>
+        <!--第一页-->
         <a href="javascript:;" :class="{'laypage_curr': pageNum === 1}" @click="page(1)">1</a>
+        <!--省略号1-->
         <span href="javascript:;" v-if="pomit">...</span>
+        <!--中间分页-->
         <a href="javascript:;" v-for="item in pageCount" v-if="item.show"
            :class="{'laypage_curr': pageNum === item.page}" @click="page(item.page)">{{item.page}}</a>
+        <!--省略号2-->
         <span href="javascript:;" v-if="nomit">...</span>
+        <!--最后一页-->
         <a href="javascript:;" class="laypage_last" :class="{'laypage_curr': pageNum === pageCount.length}"
            @click="page(pageCount.length)" v-if="pageCount.length > 1">{{pageCount.length}}</a>
+        <!--下一页-->
         <a href="javascript:;" @click="nextPage" v-if="pageNum !== pageCount.length">下一页</a>
       </div>
+      <!--无数据图片-->
       <div class="no-data" v-if="list === null || list.length === 0">
         <img src="../../assets/img/no_data.png" alt="no-data" class="ex-img">
       </div>
@@ -82,11 +95,11 @@
         checkedQuestions: [], // 已选择的题目
         showController: [], // 解析内容显示控制
         // showSelected: [],
-        pageCount: [],
+        pageCount: [], // 分页按钮，包含显示属性
         pageNum: 1,
-        types: [],
-        section: '',
-        typeController: {}
+        types: [], // 题目类型列表
+        section: '', //  题型
+        typeController: {} // 作答模式控制
       }
     },
     created () {
@@ -100,7 +113,7 @@
       // 如果获取到书本信息，则执行初始化题目列表
       catalog: function () {
         if (this.catalog && this.token) {
-          this.section = ''
+         // this.section = '' // 更换单元时，保持题型筛选
           this.getHomeWork()
         }
       },
@@ -110,6 +123,7 @@
           this.getQuestionType()
         }
       },
+      // 更换课本时，数据先置空
       reset: function (reset) {
         if (reset === true) {
           this.list = []
@@ -158,6 +172,7 @@
           return false
         }
       },
+      // 题目复选框选中状态控制
       showSelected () {
         let showSelected = []
         for (let i = 0; i < this.list.length; i++) {
@@ -174,6 +189,7 @@
         }
         return showSelected
       },
+      // 作答模式
       questionType () {
         let type = this.$store.state.questionType
         if (type.length === 1 && type[0] === 'subjective') {
@@ -188,6 +204,7 @@
     methods: {
       // 初始化&& 翻页后，获取题目列表
       getHomeWork (page) {
+        // 如果未传入参数，代表非翻页操作，故页码置为1
         if (!page) {
           this.pageNum = 1
         }
@@ -268,6 +285,7 @@
           // console.log(JSON.stringify(this.types))
         })
       },
+      // 获取作答模式控制下题型的显示控制器
       getTypeController (result) {
         let type = {}
         if (this.questionType === '1') {
@@ -294,14 +312,18 @@
           }
         }
         this.typeController = type
+        this.initSection(result)
+       // console.log(this.typeController)
+      },
+      // 作答模式控制下，初始显示的题型
+      initSection (result) {
         for (let i in result) {
           if (this.typeController[result[i]] === true) {
             this.section = i
-            console.log(result[i])
+            //  console.log(result[i])
             return
           }
         }
-       // console.log(this.typeController)
       },
       // 全部题目类型
       getAll () {

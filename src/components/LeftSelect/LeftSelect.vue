@@ -62,16 +62,19 @@
       }
     },
     watch: {
+      // token改变后开始获取第一个选择框数据
       token: function () {
         this.getSubjects()
       }
     },
+    // 初始化获取第一个选择框数据
     created () {
       if (this.token) {
         this.getSubjects()
       }
     },
     methods: {
+      // 获取第一个选择框数据
       getSubjects () {
         let params = {
           token: this.token
@@ -81,6 +84,7 @@
           this.subjects = result.data
         })
       },
+      // 获取第二个选择框数据
       getPublishers (subject) {
         // 获取数据
         this.subject = subject.code
@@ -100,6 +104,7 @@
           this.selectShow1 = false
         })
       },
+      // 获取第三个选择框数据
       getGrades (publisher) {
         this.publisher = publisher.code
         this.grades = []
@@ -115,6 +120,7 @@
           this.grades = result.data
         })
       },
+      // 获取第四个选择框数据
       getBooks (grade) {
         this.grade = grade.code
         this.books = []
@@ -129,10 +135,12 @@
           this.books = result.data
         })
       },
+      // 选择课本后，发送课本信息
       selectBook (book) {
         this.book = book
         this.$emit('selectEnd', this.book)
       },
+      // 若课本选择框没有选中内容，则触发置空事件
       resetBook () {
         this.$emit('reset')
       },

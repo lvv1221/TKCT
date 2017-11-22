@@ -123,14 +123,16 @@
       this.getTree()
     }, */
     watch: {
-      token: function () {
+     /* token: function () {
         // console.log(this.token)
-      },
+      }, */
+      // 书本信息改变时重新获取树数据
       book: function () {
         if (this.token && this.reset === false) {
           this.getTree()
         }
       },
+      // 更换课本时，树先置空
       reset: function (reset) {
         if (reset === true) {
           this.courses = []
@@ -138,6 +140,7 @@
       }
     },
     methods: {
+      // 获取树数据
       getTree () {
         let params = {
           token: this.token,
@@ -151,8 +154,10 @@
           this.courses = result.data
         })
       },
+      // 点击单元章节时，发送code
       sendCatalog (codes) {
         let catalog = this.book.code
+        // 如果点击的不是书名，则将单元章节code拼接
         if (codes) {
           let temp = ''
           codes.map(code => {
@@ -162,11 +167,13 @@
           })
           // console.log(temp + 'temp')
           catalog += temp
+          // 树节点被点击后切换样式
           this.current = codes[codes.length - 1]
         }
        // console.log(catalog)
         this.$emit('getCata', catalog)
       },
+      // 树的展开合并
       toggle (unit) {
         if (!unit) {
           this.unitShow = !this.unitShow

@@ -1,0 +1,6 @@
+{
+  "baseUrl": "http://test.open.changyan.com/api",
+  "tkUrl": "http://test.open.changyan.com/authorization-token-server/oauth/token",
+  "list": "http://zqwei.test.changyan.cn",
+  "limit": 10
+}

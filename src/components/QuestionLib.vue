@@ -65,7 +65,7 @@
       }
     },
     created () {
-     /* winTool.win.on('close', () => {
+      /* winTool.win.on('close', () => {
         winTool.win.emit('_close')
       }) */
       // 获取限定参数
@@ -119,6 +119,7 @@
           this.basketShow = !this.basketShow
         }
       },
+      // 标题栏作答模式提示语
       getTips (max, questionType) {
         if (max === 1) {
           this.tips = '当前模式下，一次只可选择一道客观题作答'

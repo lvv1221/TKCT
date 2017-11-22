@@ -4,6 +4,7 @@
       <span class="exam_textbook"  title="name" >{{name}}</span>
       <span class="caret exam_caret"></span>
     </a>
+    <!--下拉列表（通过UI给的样式控制）-->
     <ul class="dropdown-menu exam_menu exam_scroll">
       <li><a href="#" v-for="item in items" :title="item.name" @click="selectItem(item)">{{item.name}}</a></li>
     </ul>
@@ -21,6 +22,7 @@
       }
     },
     watch: {
+      // 如果选择课本后重新选择课本，则触发重置事件（只有第四个选择框被监听）
       items (items, oldItems) {
         this.name = ''
         if (oldItems.length !== 0 && items.length === 0) {
@@ -29,16 +31,19 @@
       }
     },
     computed: {
+      // 选择框类型（为了控制点击另一个选择框后，前一个选择框下拉列表关闭）
       type () {
         return this.$store.state.selectType
       }
     },
     methods: {
+      // 选择点击后
       selectItem (item) {
         this.name = item.name
         this.$emit('select', item)
         this.selectShow = false
       },
+      // 打开下拉列表
       open () {
         this.$store.dispatch('setSelectType', this.selectName)
         this.selectShow = !this.selectShow

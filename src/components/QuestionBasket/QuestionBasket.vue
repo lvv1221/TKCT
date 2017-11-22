@@ -25,6 +25,7 @@
           </span>
           <span class="keyword">题型：{{item.section.categoryName}}</span>
         </div>
+      <!--习题选项-->
         <div class="selection">
           <p v-for="op in item.contentObject.accessories[0].options">
             <span>{{op.id}}.</span>
@@ -154,12 +155,15 @@
     },
     created () {
      // console.log(this.checked)
+      // 获取选题
       this.list = this.$store.state.checkedQuestions
     },
     updated () {
+      // 动态更新题目个数（分页）
       this.pageCount = this.$store.getters.checkedCount
     },
     computed: {
+      // 计算分页按钮总宽度
       pageWidth () {
         let width = ''
         width = 71 + (this.pageCount - 1) * 76 + 'px'
@@ -167,16 +171,16 @@
       }
     },
     methods: {
-      show () {
-        this.showFlag = true
-      },
+      // 关闭习题蓝
       hidden () {
         this.$emit('hidden')
        // this.showFlag = false
       },
+      // 翻页
       page (index) {
         this.i = index
       },
+      // 删除选题
       deleteQue (index) {
         if (index === this.pageCount - 1) {
           this.i--
@@ -184,16 +188,19 @@
         this.$store.dispatch('deleteQuestion', this.list[index])
         this.diaShow = false
       },
+      // 上一页
       prePage () {
         if (this.pageNum > -1) {
           this.pageNum -= 1
         }
       },
+      // 下一题
       NextPage () {
         if (this.pageNum < this.pageCount - 11) {
           this.pageNum += 1
         }
       },
+      // 保存选题（制卷）
       save () {
         console.log(this.pageCount)
         let list = this.$store.state.checkedQuestions
