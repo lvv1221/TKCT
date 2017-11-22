@@ -2,7 +2,7 @@
   <div class="list">
     <div class="exam_right_top">
       <ul class="nav nav-tabs exam_tabs" v-if="types.length !== 0">
-        <li @click="getAll" :class="{'active': section === ''}"><a href="#">全部</a></li>
+        <!--<li @click="getAll" :class="{'active': section === ''}"><a href="#">全部</a></li>-->
         <li v-for="(value,key) in types" @click="getSection(key, value)" :class="{'active': section === key, 'disabled': !typeController[value]}">
           <a href="#">{{value}}</a>
         </li>
@@ -294,6 +294,13 @@
           }
         }
         this.typeController = type
+        for (let i in result) {
+          if (this.typeController[result[i]] === true) {
+            this.section = i
+            console.log(result[i])
+            return
+          }
+        }
        // console.log(this.typeController)
       },
       // 全部题目类型

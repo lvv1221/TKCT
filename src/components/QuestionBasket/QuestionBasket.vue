@@ -1,7 +1,7 @@
 <template>
-<div class="xy-qtool" style="background-color: #e8e8e8">
+<div class="xy-qtool" style="background-color: #e8e8e8;height: 678px">
   <!--习题列表-->
-  <div class="xy-make-ques-body">
+  <div class="xy-make-ques-body" >
     <template v-for="(item, index) in list"  v-if="index === i">
       <!--习题序号& 删除按钮-->
     <div class="frame question-detail">
@@ -138,6 +138,8 @@
 </template>
 
 <script>
+ // import winTool from '../../assets/js/winTool'
+
   export default {
     name: 'QuestionBasket',
     data () {
@@ -205,6 +207,7 @@
           this.$set(obj, 'contentObject', list[i].contentObject)
           arr.push(obj)
         }
+       // winTool.win.emit('setStudyCloudContent', arr)
         console.log(JSON.stringify(arr))
       }
     }
